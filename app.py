@@ -33,8 +33,13 @@ from db_manager import (
     update_record,
     delete_record
 )
-
+from intelligence_engine import (
+    generate_intelligence_report
+)
 from data_validation import validate_dataframe
+from burnout_detector import (
+    detect_burnout_risk
+)
 
 # --------------------------------------------------
 # PAGE CONFIG
@@ -418,6 +423,13 @@ predicted_score = (
     predict_next_productivity_score(df)
 )
 ml_results = train_prediction_models(df)
+burnout = detect_burnout_risk(df)
+intelligence_report = generate_intelligence_report(
+    report,
+    factor_analysis,
+    ml_results,
+    burnout
+)
 # --------------------------------------------------
 # DATABASE STATS
 # --------------------------------------------------
@@ -511,42 +523,29 @@ with col4:
         "Primary Limiter",
         report["weakest_factor"]
     )
+
 with col5:
     st.metric(
         "Data Health",
         f"{quality_report['score']}%"
     )
+
 with col6:
-
-    prediction_text = (
-        predicted_score
-        if predicted_score is not None
-        else "N/A"
+    st.metric(
+        "Predicted Score",
+        predicted_score if predicted_score else "N/A"
     )
-with col7:
 
+with col7:
     st.metric(
         "Best Model",
-        (
-            ml_results["best_model"]
-            if ml_results
-            else "N/A"
-        )
+        ml_results["best_model"] if ml_results else "N/A"
     )
 
 with col8:
-
     st.metric(
         "R² Score",
-        (
-            ml_results["r2_score"]
-            if ml_results
-            else "N/A"
-        )
-    )
-    st.metric(
-        "Predicted Score",
-        prediction_text
+        ml_results["r2_score"] if ml_results else "N/A"
     )
 st.markdown("---")
 
@@ -672,7 +671,21 @@ st.dataframe(
     quality_df,
     use_container_width=True
 )
+# --------------------------------------------------
+# VISION INTELLIGENCE ENGINE
+# --------------------------------------------------
 
+st.markdown("---")
+
+st.subheader("🧠 Vision Intelligence Engine")
+
+for index, insight in enumerate(
+    intelligence_report["insights"],
+    start=1
+):
+    st.success(
+        f"{index}. {insight}"
+    )
 # --------------------------------------------------
 # DATASET
 # --------------------------------------------------
