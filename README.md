@@ -57,12 +57,15 @@ ML Forecasting
 ---
 
 ## 📂 Project Structure
-
 ```text
 Vision/
+├── app.py
+├── README.md
+├── requirements.txt
 │
 ├── data/
 │   ├── raw/
+│   │   └── focusiq_dummy_90_days.csv
 │   └── processed/
 │
 ├── database/
@@ -70,6 +73,7 @@ Vision/
 │
 ├── src/
 │   ├── data_generator.py
+│   ├── data_validation.py
 │   ├── db_manager.py
 │   ├── analysis.py
 │   ├── metrics.py
@@ -77,12 +81,19 @@ Vision/
 │   ├── productivity_history.py
 │   ├── trend_analysis.py
 │   ├── rules_engine.py
+│   ├── quality_checks.py
+│   ├── burnout_detector.py
+│   ├── productivity_prediction.py
+│   ├── productivity_prediction_v2.py
+│   ├── intelligence_engine.py
 │   └── visualizer.py
 │
+├── notebooks/
+│
 └── visuals/
+    ├── correlation_heatmap.png
+    └── productivity_score_trend.png
 ```
-
----
 
 ## 📊 Productivity Metrics
 
